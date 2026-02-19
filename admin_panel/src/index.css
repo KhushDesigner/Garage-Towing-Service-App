@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #4F46E5;
+  --color-primary-hover: #4338CA;
+  --color-success: #10B981;
+  --color-alert: #EF4444;
+  --color-bg: #F9FAFB;
+}
+
+:root {
+  --primary-color: #4F46E5;
+  --primary-hover: #4338CA;
+  --success-color: #10B981;
+  --alert-color: #EF4444;
+  --background-color: #F9FAFB;
+  --text-primary: #111827;
+  --text-secondary: #6B7280;
+  --border-color: #F3F4F6;
+
+  --sidebar-width: 280px;
+  --header-height: 80px;
+}
+
+@layer base {
+  body {
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    @apply antialiased min-h-screen;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer components {
+  .premium-card {
+    background-color: white;
+    border-radius: 1rem;
+    border: 1px solid rgba(243, 244, 246, 0.5);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+    @apply transition-all duration-300;
+  }
+
+  .premium-card:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 1rem;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold tracking-tight;
+  }
+
+  .badge-success {
+    @apply bg-emerald-50 text-emerald-700 border border-emerald-100;
+  }
+
+  .badge-alert {
+    @apply bg-rose-50 text-rose-700 border border-rose-100;
+  }
+
+  .badge-warning {
+    @apply bg-amber-50 text-amber-700 border border-amber-100;
+  }
+
+  .badge-primary {
+    @apply bg-indigo-50 text-indigo-700 border border-indigo-100;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-200 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-300;
+}
+
+/* Gradients */
+.bg-gradient-indigo {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-500;
+}
