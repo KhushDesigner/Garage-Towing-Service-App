@@ -16,7 +16,7 @@ const Layout = () => {
             {/* Mobile Sidebar Overlay */}
             {sidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 z-20 md:hidden backdrop-blur-sm transition-opacity"
+                    className="fixed inset-0 bg-black/50 z-20 lg:hidden backdrop-blur-sm transition-opacity animate-in fade-in duration-300"
                     onClick={toggleSidebar}
                 />
             )}
@@ -32,7 +32,7 @@ const Layout = () => {
                     className={clsx(
                         "flex-1 overflow-x-hidden overflow-y-auto transition-all duration-300 ease-in-out",
                         "p-5 md:p-6 pb-10 md:pb-10 pt-[calc(var(--header-height)+16px)] md:pt-[calc(var(--header-height)+24px)]",
-                        sidebarOpen ? "lg:ml-[var(--sidebar-width)]" : "lg:ml-[80px]"
+                        sidebarOpen ? "lg:ml-[var(--sidebar-width)]" : "lg:ml-[88px]"
                     )}
                 >
                     <div className="">

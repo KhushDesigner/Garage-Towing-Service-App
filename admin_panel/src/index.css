@@ -74,21 +74,30 @@
 }
 
 /* Custom Scrollbar */
-::-webkit-scrollbar {
+::-webkit-scrollbar,
+.custom-scrollbar::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
 
-::-webkit-scrollbar-track {
+::-webkit-scrollbar-track,
+.custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb,
+.custom-scrollbar::-webkit-scrollbar-thumb {
   @apply bg-gray-200 rounded-full;
 }
 
-::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover,
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-300;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #E5E7EB transparent;
 }
 
 /* Gradients */

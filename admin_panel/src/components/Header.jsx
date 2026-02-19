@@ -117,7 +117,7 @@ const Header = ({ sidebarOpen, toggleSidebar }) => {
             className={clsx(
                 "fixed top-0 right-0 z-10 flex items-center justify-between px-4 md:px-6 bg-white border-b border-gray-200 shadow-sm transition-all duration-300",
                 "left-0",
-                sidebarOpen ? "lg:left-[var(--sidebar-width)]" : "lg:left-[80px]"
+                sidebarOpen ? "lg:left-[var(--sidebar-width)]" : "lg:left-[88px]"
             )}
             style={{
                 height: 'var(--header-height)',
@@ -163,7 +163,7 @@ const Header = ({ sidebarOpen, toggleSidebar }) => {
                         <div className="fixed inset-x-4 top-[calc(var(--header-height)+8px)] md:absolute md:inset-auto md:right-0 md:mt-3 md:w-[400px] bg-white rounded-3xl shadow-2xl border border-gray-100 animate-in fade-in slide-in-from-top-4 duration-300 overflow-hidden">
                             {/* Panel Header */}
                             <div className="px-6 py-5 border-b border-gray-50 bg-gray-50/50 flex items-center justify-between">
-                                <div>
+                                <div className="">
                                     <h3 className="text-base font-black text-gray-900">Notifications</h3>
                                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">You have {unreadCount} unread alerts</p>
                                 </div>

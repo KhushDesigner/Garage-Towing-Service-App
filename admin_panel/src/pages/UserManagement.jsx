@@ -107,7 +107,7 @@ const UserManagement = () => {
     };
 
     return (
-        <div className="space-y-8 pb-10">
+        <div className="space-y-6 md:space-y-8">
             {/* Page Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6">
                 <div className="space-y-1">
