@@ -192,21 +192,21 @@ const UserManagement = () => {
                         <table className="w-full text-left border-collapse">
                             <thead>
                                 <tr className="bg-gray-50/80 border-b border-gray-100">
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap w-24">ID</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Customer Profile</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap hidden xl:table-cell">Contact Details</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-center text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Requests</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-center text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap hidden md:table-cell">Total Spent</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-center text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap hidden lg:table-cell">Rating</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Status</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-right text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Actions</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap w-24">ID</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Customer Profile</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap hidden xl:table-cell">Contact Details</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-center text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Requests</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap hidden md:table-cell">Total Spent</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-center text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap hidden lg:table-cell">Rating</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Status</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-right text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-50">
                                 {paginatedUsers.map((user) => (
                                     <tr key={user.id} className="hover:bg-indigo-50/20 transition-all group">
-                                        <td className="px-4 md:px-6 py-3 md:py-4">
-                                            <span className="text-xs md:text-sm font-bold text-indigo-600 tracking-tight">#{user.id}</span>
+                                        <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm font-bold text-indigo-600 tracking-tight">
+                                            #{user.id}
                                         </td>
                                         <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap">
                                             <div className="flex items-center gap-2.5 md:gap-3">
@@ -240,7 +240,7 @@ const UserManagement = () => {
                                                 {user.totalRequests}
                                             </span>
                                         </td>
-                                        <td className="px-4 md:px-6 py-3 md:py-4 text-center hidden md:table-cell">
+                                        <td className="px-4 md:px-6 py-3 md:py-4 text-left hidden md:table-cell">
                                             <div className="text-xs md:text-sm font-black text-gray-900 tracking-tighter">₹{user.totalSpent}</div>
                                         </td>
                                         <td className="px-6 py-5 hidden lg:table-cell">

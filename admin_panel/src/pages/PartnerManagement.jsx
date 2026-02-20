@@ -15,7 +15,9 @@ import {
     Wrench,
     Truck,
     ArrowUpRight,
-    ShieldCheck
+    ShieldCheck,
+    Mail,
+    Phone
 } from 'lucide-react';
 import StatusBadge from '../components/StatusBadge';
 import PartnerDetailsDrawer from '../components/PartnerDetailsDrawer';
@@ -71,14 +73,14 @@ const PartnerManagement = () => {
 
     // Realistic Partner Data
     const [partners] = useState([
-        { id: 'PRT-101', name: 'Quick Fix Garage', phone: '+91 99887 76655', serviceType: 'Garage', rating: 4.7, online: true, kyc: 'Verified', earnings: 154200, jobs: 312, joined: '12 Jan 2024' },
-        { id: 'PRT-102', name: 'City Towing Services', phone: '+91 88776 65544', serviceType: 'Towing', rating: 4.9, online: true, kyc: 'Verified', earnings: 242000, jobs: 482, joined: '08 Nov 2023' },
-        { id: 'PRT-103', name: 'Mechanic On Wheels', phone: '+91 77665 54433', serviceType: 'Garage', rating: 3.8, online: false, kyc: 'Pending', earnings: 45000, jobs: 67, joined: '20 Feb 2024' },
-        { id: 'PRT-104', name: 'Highway Helpers', phone: '+91 66554 43322', serviceType: 'Towing', rating: 4.6, online: true, kyc: 'Verified', earnings: 195800, jobs: 390, joined: '15 Dec 2023' },
-        { id: 'PRT-105', name: 'Bike Doctor', phone: '+91 55443 32211', serviceType: 'Garage', rating: 4.8, online: false, kyc: 'Verified', earnings: 120500, jobs: 214, joined: '03 Mar 2024' },
-        { id: 'PRT-106', name: '24/7 Car Rescue', phone: '+91 91234 56789', serviceType: 'Towing', rating: 4.2, online: true, kyc: 'Pending', earnings: 89000, jobs: 145, joined: '28 Jan 2024' },
-        { id: 'PRT-107', name: 'Metro Motors', phone: '+91 82345 67890', serviceType: 'Garage', rating: 4.5, online: true, kyc: 'Verified', earnings: 312000, jobs: 578, joined: '10 Sep 2023' },
-        { id: 'PRT-108', name: 'Express Towing', phone: '+91 73456 78901', serviceType: 'Towing', rating: 3.5, online: false, kyc: 'Pending', earnings: 28000, jobs: 42, joined: '14 Mar 2024' },
+        { id: 'PRT-101', name: 'Quick Fix Garage', email: 'quickfix@example.com', phone: '+91 99887 76655', serviceType: 'Garage', rating: 4.7, online: true, kyc: 'Verified', earnings: 154200, jobs: 312, joined: '12 Jan 2024', fullAddress: 'G-12, Wing B, Lotus Business Park, Andheri East, Mumbai, Maharashtra 400069' },
+        { id: 'PRT-102', name: 'City Towing Services', email: 'citytowing@example.com', phone: '+91 88776 65544', serviceType: 'Towing', rating: 4.9, online: true, kyc: 'Verified', earnings: 242000, jobs: 482, joined: '08 Nov 2023', fullAddress: 'Shop No 4, Sai Krupa CHS, Link Road, Borivali West, Mumbai, Maharashtra 400092' },
+        { id: 'PRT-103', name: 'Mechanic On Wheels', email: 'onwheels@example.com', phone: '+91 77665 54433', serviceType: 'Garage', rating: 3.8, online: false, kyc: 'Pending', earnings: 45000, jobs: 67, joined: '20 Feb 2024', fullAddress: 'Shop 2, Ground Floor, Royal Arcade, Malad West, Mumbai, Maharashtra 400064' },
+        { id: 'PRT-104', name: 'Highway Helpers', email: 'highway@example.com', phone: '+91 66554 43322', serviceType: 'Towing', rating: 4.6, online: true, kyc: 'Verified', earnings: 195800, jobs: 390, joined: '15 Dec 2023', fullAddress: 'Unit 102, Everest Chambers, Marol Naka, Andheri West, Mumbai, Maharashtra 400059' },
+        { id: 'PRT-105', name: 'Bike Doctor', email: 'bikedoctor@example.com', phone: '+91 55443 32211', serviceType: 'Garage', rating: 4.8, online: false, kyc: 'Verified', earnings: 120500, jobs: 214, joined: '03 Mar 2024', fullAddress: 'Plot 45, Sector 18, Vashi, Navi Mumbai, Maharashtra 400703' },
+        { id: 'PRT-106', name: '24/7 Car Rescue', email: 'carrescue@example.com', phone: '+91 91234 56789', serviceType: 'Towing', rating: 4.2, online: true, kyc: 'Pending', earnings: 89000, jobs: 145, joined: '28 Jan 2024', fullAddress: 'Room 5, Krishna Co-op Hsg Soc, Thane West, Maharashtra 400601' },
+        { id: 'PRT-107', name: 'Metro Motors', email: 'metromotors@example.com', phone: '+91 82345 67890', serviceType: 'Garage', rating: 4.5, online: true, kyc: 'Verified', earnings: 312000, jobs: 578, joined: '10 Sep 2023', fullAddress: 'No 15, Silver Oaks Industrial Area, Parel, Mumbai, Maharashtra 400012' },
+        { id: 'PRT-108', name: 'Express Towing', email: 'expresstow@example.com', phone: '+91 73456 78901', serviceType: 'Towing', rating: 3.5, online: false, kyc: 'Pending', earnings: 28000, jobs: 42, joined: '14 Mar 2024', fullAddress: 'Shop 8, Galaxy Mall Mansarovar, Navi Mumbai, Maharashtra 410206' },
     ]);
 
     const filteredPartners = partners.filter(p => {
@@ -126,7 +128,7 @@ const PartnerManagement = () => {
 
     // Custom dropdown component
     const FilterDropdown = ({ options, value, onChange, isOpen, setIsOpen, ref, icon: Icon }) => (
-        <div ref={ref} className="relative flex-1 lg:flex-none min-w-[180px]">
+        <div ref={ref} className="relative flex-1 lg:flex-none min-w-[200px]">
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className={clsx(
@@ -190,7 +192,7 @@ const PartnerManagement = () => {
             <div className="premium-card overflow-hidden">
                 {/* Search and Filters */}
                 <div className="p-5 border-b border-gray-100/50 bg-gray-50/30">
-                    <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
+                    <div className="flex flex-col xl:flex-row gap-4 xl:items-center justify-between">
                         <div className="relative w-full lg:w-[400px] group">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-indigo-600 transition-colors" />
                             <input
@@ -229,7 +231,7 @@ const PartnerManagement = () => {
                                 ref={kycRef}
                                 icon={ShieldCheck}
                             />
-                            <div className="hidden xl:flex items-center gap-1.5 px-4 py-3 bg-indigo-50 border border-indigo-100/50 rounded-2xl">
+                            <div className="hidden lg:flex items-center gap-1.5 px-4 py-3 bg-indigo-50 border border-indigo-100/50 rounded-2xl">
                                 <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
                                 <span className="text-xs font-black text-indigo-700 uppercase tracking-widest">Live</span>
                             </div>
@@ -243,34 +245,49 @@ const PartnerManagement = () => {
                         <table className="w-full text-left border-collapse">
                             <thead>
                                 <tr className="bg-gray-50/80 border-b border-gray-100">
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Partner Detail</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Service Type</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap text-center">Rating</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap text-center">Status</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">KYC</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap text-right hidden md:table-cell">Earnings</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap text-center hidden lg:table-cell">Jobs</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap text-right">Actions</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">ID</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">CUSTOMER PROFILE</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">CONTACT DETAILS</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Service Type</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-center text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Rating</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">KYC</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap hidden md:table-cell">Earnings</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-center text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap hidden lg:table-cell">Jobs</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-50">
                                 {paginatedPartners.map((partner) => (
                                     <tr key={partner.id} className="hover:bg-indigo-50/20 transition-all group">
+                                        <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm font-bold text-indigo-600 tracking-tight">
+                                            #{partner.id.split('-')[1]}
+                                        </td>
                                         <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap">
-                                            <div className="flex items-center gap-2.5 md:gap-3">
+                                            <div className="flex items-center gap-3">
                                                 <div className="relative">
-                                                    <div className="w-10 h-10 md:w-11 md:h-11 bg-white border border-gray-200 rounded-xl md:rounded-2xl flex items-center justify-center text-indigo-600 font-black md:text-base shadow-sm group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 transition-all duration-300">
+                                                    <div className="w-10 h-10 md:w-11 md:h-11 bg-white border border-gray-100 rounded-xl md:rounded-2xl flex items-center justify-center text-indigo-600 font-black text-lg shadow-sm">
                                                         {partner.name[0]}
                                                     </div>
                                                     <div className={clsx(
-                                                        "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white shadow-sm",
+                                                        "absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full border-[3px] border-white shadow-sm",
                                                         partner.online ? 'bg-emerald-500' : 'bg-gray-300'
                                                     )}></div>
                                                 </div>
                                                 <div>
                                                     <div className="font-black text-gray-900 text-xs md:text-sm tracking-tight">{partner.name}</div>
-                                                    <div className="text-xs font-bold text-indigo-600 mt-0.5">{partner.phone}</div>
-                                                    <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">{partner.id}</div>
+                                                    <div className="text-[10px] md:text-[11px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">JOINED {partner.joined}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap">
+                                            <div className="flex flex-col gap-1.5 justify-center">
+                                                <div className="flex items-center gap-2">
+                                                    <Phone className="w-3.5 h-3.5 text-gray-300" />
+                                                    <span className="text-xs font-bold text-gray-700 tracking-tight">{partner.phone}</span>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <Mail className="w-3.5 h-3.5 text-gray-300" />
+                                                    <span className="text-xs font-bold text-gray-400 lowercase">{partner.email}</span>
                                                 </div>
                                             </div>
                                         </td>
@@ -286,28 +303,15 @@ const PartnerManagement = () => {
                                             </div>
                                         </td>
                                         <td className="px-4 md:px-6 py-3 md:py-4 text-center">
-                                            <div className="inline-flex items-center gap-1.5 bg-amber-50 px-2.5 py-1.5 rounded-xl border border-amber-100">
-                                                <span className="text-xs font-black text-amber-800">{partner.rating}</span>
+                                            <div className="flex items-center justify-center gap-1.5">
+                                                <span className="text-xs md:text-sm font-black text-gray-900">{partner.rating}</span>
                                                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400 drop-shadow-sm" />
-                                            </div>
-                                        </td>
-                                        <td className="px-4 md:px-6 py-3 md:py-4 text-center">
-                                            <div className="flex items-center justify-center gap-2">
-                                                <span className={clsx(
-                                                    "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider",
-                                                    partner.online
-                                                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-100'
-                                                        : 'bg-gray-50 text-gray-500 border border-gray-100'
-                                                )}>
-                                                    <span className={clsx("w-1.5 h-1.5 rounded-full", partner.online ? 'bg-emerald-500 animate-pulse' : 'bg-gray-400')}></span>
-                                                    {partner.online ? 'Online' : 'Offline'}
-                                                </span>
                                             </div>
                                         </td>
                                         <td className="px-4 md:px-6 py-3 md:py-4">
                                             <StatusBadge status={partner.kyc} />
                                         </td>
-                                        <td className="px-4 md:px-6 py-3 md:py-4 text-right hidden md:table-cell">
+                                        <td className="px-4 md:px-6 py-3 md:py-4 text-left hidden md:table-cell">
                                             <div className="text-xs md:text-sm font-black text-gray-900 tracking-tighter">
                                                 <span className="text-gray-400 mr-0.5">₹</span>
                                                 {partner.earnings.toLocaleString()}

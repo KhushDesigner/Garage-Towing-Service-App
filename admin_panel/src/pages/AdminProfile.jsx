@@ -272,7 +272,7 @@ const AdminProfile = () => {
                                             </td>
                                             <td className="px-8 py-5">
                                                 <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-tight ${perm.level === 'Full Access' ? 'bg-blue-50 text-blue-600' :
-                                                        perm.level === 'Edit Access' ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-500'
+                                                    perm.level === 'Edit Access' ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-500'
                                                     }`}>
                                                     {perm.level}
                                                 </span>

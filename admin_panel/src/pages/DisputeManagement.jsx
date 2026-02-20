@@ -152,8 +152,8 @@ const DisputeManagement = () => {
                                     </td>
                                     <td className="px-8 py-6">
                                         <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-tight ${dispute.issueType === 'Misbehavior' ? 'bg-orange-50 text-orange-600' :
-                                                dispute.issueType === 'Overcharged' ? 'bg-red-50 text-red-600' :
-                                                    'bg-gray-100 text-gray-700'
+                                            dispute.issueType === 'Overcharged' ? 'bg-red-50 text-red-600' :
+                                                'bg-gray-100 text-gray-700'
                                             }`}>
                                             {dispute.issueType}
                                         </span>

@@ -75,7 +75,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                                             )}
                                         />
                                         {isOpen && (
-                                            <span className="ml-3 text-[13px] font-bold tracking-tight truncate uppercase">
+                                            <span className="ml-3 text-[13px] font-bold tracking-tight truncate ">
                                                 {item.name}
                                             </span>
                                         )}
@@ -101,7 +101,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             </nav>
 
             {/* Bottom Support Card */}
-            <div className={clsx("p-4 border-t border-gray-100 bg-gray-50/30 shrink-0", !isOpen && "hidden lg:block")}>
+            {/* <div className={clsx("p-4 border-t border-gray-100 bg-gray-50/30 shrink-0", !isOpen && "hidden lg:block")}>
                 {isOpen ? (
                     <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-5 shadow-xl group">
                         <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all duration-700" />
@@ -121,7 +121,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                         </button>
                     </div>
                 )}
-            </div>
+            </div> */}
         </aside>
     );
 };

@@ -62,7 +62,7 @@ const UserDetailsDrawer = ({ user, isOpen, onClose }) => {
                 </div>
                 <button
                     onClick={onClose}
-                    className="z-11 absolute top-3 right-4 sm:top-5 sm:right-5 z-10 p-2 sm:p-2.5 bg-white/80 backdrop-blur-sm hover:bg-gray-100 rounded-xl sm:rounded-2xl transition-all text-gray-400 hover:text-gray-900 active:scale-90 shadow-sm border border-gray-100"
+                    className="z-11 absolute cursor-pointer top-3 right-4 sm:top-5 sm:right-5 z-10 p-2 sm:p-2.5 bg-white/80 backdrop-blur-sm hover:bg-gray-100 rounded-xl sm:rounded-2xl transition-all text-gray-400 hover:text-gray-900 active:scale-90 shadow-sm border border-gray-100"
                 >
                     <X className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
@@ -91,6 +91,15 @@ const UserDetailsDrawer = ({ user, isOpen, onClose }) => {
                         <div className="bg-white rounded-2xl border border-gray-100 shadow-lg shadow-gray-100/50 p-4 sm:p-5">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center shrink-0">
+                                        <Calendar className="w-4 h-4 text-amber-600" />
+                                    </div>
+                                    <div className="min-w-0">
+                                        <p className="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Joined</p>
+                                        <p className="text-sm font-bold text-gray-900 truncate">{user.joined || 'Jan 2024'}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
                                         <Phone className="w-4 h-4 text-blue-600" />
                                     </div>
@@ -117,15 +126,7 @@ const UserDetailsDrawer = ({ user, isOpen, onClose }) => {
                                         <p className="text-sm font-bold text-gray-900 truncate">New Delhi, India</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center shrink-0">
-                                        <Calendar className="w-4 h-4 text-amber-600" />
-                                    </div>
-                                    <div className="min-w-0">
-                                        <p className="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Joined</p>
-                                        <p className="text-sm font-bold text-gray-900 truncate">{user.joined || 'Jan 2024'}</p>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -159,7 +160,7 @@ const UserDetailsDrawer = ({ user, isOpen, onClose }) => {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
                                     className={clsx(
-                                        "flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-wider sm:tracking-widest transition-all active:scale-95",
+                                        "flex-1 flex cursor-pointer items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-wider sm:tracking-widest transition-all active:scale-95",
                                         activeTab === tab.id
                                             ? "bg-white text-gray-900 shadow-sm"
                                             : "text-gray-400 hover:text-gray-600"

@@ -3,7 +3,7 @@ import MetricCard from '../components/MetricCard';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
-import { Users, Truck, CheckCircle, Activity, DollarSign, AlertTriangle, ArrowRight } from 'lucide-react';
+import { Users, CheckCircle, Activity, DollarSign, AlertTriangle, ArrowRight, Wrench, Truck, } from 'lucide-react';
 import StatusBadge from '../components/StatusBadge';
 import { RECENT_REQUESTS_DATA } from '../utils/constants';
 
@@ -72,12 +72,12 @@ const Dashboard = () => {
                         <table className="min-w-full">
                             <thead>
                                 <tr className="bg-gray-50/50 border-b border-gray-100/50">
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">ID</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">User</th>
-                                    <th className="hidden md:table-cell px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Partner</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Service</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Amount</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[9px] md:text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Status</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">ID</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">User</th>
+                                    <th className="hidden md:table-cell px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Partner</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Service</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Amount</th>
+                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Status</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100/50">
@@ -85,12 +85,13 @@ const Dashboard = () => {
                                     <tr key={request.id} className="hover:bg-indigo-50/30 transition-colors group">
                                         <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm font-bold text-indigo-600 tracking-tight">{request.id}</td>
                                         <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm font-semibold text-gray-900">{request.user}</td>
-                                        <td className="hidden md:table-cell px-4 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-500 font-medium group-hover:text-gray-700 transition-colors">{request.partner}</td>
+                                        <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-500 font-medium group-hover:text-gray-700 transition-colors">{request.partner}</td>
                                         <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap text-sm">
                                             <span className={clsx(
-                                                "px-1.5 md:px-2 py-0.5 md:py-1 rounded-md text-[9px] md:text-[10px] font-extrabold uppercase tracking-tight",
-                                                request.service === 'Garage' ? 'bg-indigo-50 text-indigo-700' : 'bg-violet-50 text-violet-700'
+                                                "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-black",
+                                                request.service === 'Garage' ? 'bg-violet-50 border-violet-100 text-violet-700' : 'bg-sky-50 border-sky-100 text-sky-700'
                                             )}>
+                                                {request.service === 'Garage' ? <Wrench className="w-3 h-3" /> : <Truck className="w-3 h-3" />}
                                                 {request.service}
                                             </span>
                                         </td>

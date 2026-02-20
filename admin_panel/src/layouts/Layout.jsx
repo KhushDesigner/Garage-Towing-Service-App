@@ -12,7 +12,7 @@ const Layout = () => {
     };
 
     return (
-        <div className="flex h-screen overflow-hidden bg-gray-50">
+        <div className="flex min-h-screen overflow-hidden bg-gray-50">
             {/* Mobile Sidebar Overlay */}
             {sidebarOpen && (
                 <div
@@ -30,7 +30,7 @@ const Layout = () => {
 
                 <main
                     className={clsx(
-                        "flex-1 overflow-x-hidden overflow-y-auto transition-all duration-300 ease-in-out",
+                        "transition-all duration-300 ease-in-out",
                         "p-5 md:p-6 pb-10 md:pb-10 pt-[calc(var(--header-height)+16px)] md:pt-[calc(var(--header-height)+24px)]",
                         sidebarOpen ? "lg:ml-[var(--sidebar-width)]" : "lg:ml-[88px]"
                     )}
