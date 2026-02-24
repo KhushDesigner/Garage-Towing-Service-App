@@ -13,10 +13,10 @@ const MetricCard = ({ title, value, change, trend = 'up', icon: Icon, color = 'b
     };
 
     return (
-        <div className="premium-card p-6 flex flex-col justify-between group">
+        <div className="premium-card p-4 md:p-5 flex flex-col justify-between group">
             <div className="flex justify-between items-start">
                 <div>
-                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">{title}</p>
+                    <p className="text-xs font-bold text-gray-400">{title}</p>
                     <h3 className="text-2xl font-extrabold mt-1 text-gray-900 tracking-tight">{value}</h3>
                 </div>
                 <div className={clsx("p-3 rounded-xl transition-all duration-300 group-hover:scale-110 shadow-sm", colorMap[color] || colorMap.blue)}>
@@ -35,7 +35,7 @@ const MetricCard = ({ title, value, change, trend = 'up', icon: Icon, color = 'b
                         {trend === 'up' ? <ArrowUp className="w-3.5 h-3.5 mr-0.5" /> : <ArrowDown className="w-3.5 h-3.5 mr-0.5" />}
                         {change}
                     </div>
-                    <span className="text-gray-400 ml-2 font-medium">vs last month</span>
+                    <span className="text-gray-400 ml-2 font-medium text-[10px]">vs last month</span>
                 </div>
             )}
         </div>

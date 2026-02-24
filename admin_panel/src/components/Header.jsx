@@ -165,7 +165,7 @@ const Header = ({ sidebarOpen, toggleSidebar }) => {
                             <div className="px-6 py-5 border-b border-gray-50 bg-gray-50/50 flex items-center justify-between">
                                 <div className="">
                                     <h3 className="text-base font-black text-gray-900">Notifications</h3>
-                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">You have {unreadCount} unread alerts</p>
+                                    <p className="text-[11px] font-medium text-gray-400 mt-0.5">You have {unreadCount} unread alerts</p>
                                 </div>
                                 <button
                                     onClick={markAllRead}
@@ -202,7 +202,7 @@ const Header = ({ sidebarOpen, toggleSidebar }) => {
                                                     </p>
                                                     <div className="flex items-center gap-1.5 mt-2.5">
                                                         <Clock className="w-3 h-3 text-gray-300" />
-                                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none">
+                                                        <span className="text-[11px] font-medium text-gray-400 leading-none">
                                                             {n.time}
                                                         </span>
                                                     </div>
@@ -246,7 +246,7 @@ const Header = ({ sidebarOpen, toggleSidebar }) => {
                         </div>
                         <div className="hidden lg:block text-left pr-2">
                             <p className="text-xs font-black text-gray-900 leading-tight">Admin User</p>
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">Super Admin</p>
+                            <p className="text-[10px] font-bold text-gray-400 mt-0.5">Super Admin</p>
                         </div>
                         <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${profileOpen ? 'rotate-180' : ''}`} />
                     </button>

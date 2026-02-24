@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { X, MapPin, Car, History, CreditCard, Star, Phone, Mail, Calendar, Shield, ChevronRight } from 'lucide-react';
 import StatusBadge from './StatusBadge';
 import clsx from 'clsx';
+import Button from './common/Button';
 
 const UserDetailsDrawer = ({ user, isOpen, onClose }) => {
     const [activeTab, setActiveTab] = useState('requests');
@@ -254,16 +255,12 @@ const UserDetailsDrawer = ({ user, isOpen, onClose }) => {
 
                 {/* Footer Actions */}
                 <div className="p-4 sm:p-6 border-t border-gray-100 bg-white flex gap-2.5 sm:gap-3 shrink-0 safe-bottom">
-                    <button
-                        onClick={onClose}
-                        className="flex-1 py-3 sm:py-3.5 px-4 bg-gray-100 text-gray-700 font-black text-[10px] sm:text-xs uppercase tracking-widest rounded-xl sm:rounded-2xl hover:bg-gray-200 transition-all active:scale-95"
-                    >
+                    <Button variant="outline" onClick={onClose} className="flex-1">
                         Close
-                    </button>
-                    <button className="flex-1 py-3 sm:py-3.5 px-4 bg-rose-600 text-white font-black text-[10px] sm:text-xs uppercase tracking-widest rounded-xl sm:rounded-2xl hover:bg-rose-700 transition-all shadow-lg shadow-rose-100 active:scale-95 flex items-center justify-center gap-2">
-                        <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    </Button>
+                    <Button variant="danger" leftIcon={<Shield className="w-4 h-4" />} className="flex-1">
                         Block User
-                    </button>
+                    </Button>
                 </div>
             </div>
         </>

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import MetricCard from '../components/MetricCard';
-import clsx from 'clsx';
 import { Link } from 'react-router-dom';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
-import { Users, CheckCircle, Activity, DollarSign, AlertTriangle, ArrowRight, Wrench, Truck, } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { Users, CheckCircle, Activity, DollarSign, AlertTriangle, ArrowRight, Wrench, Truck } from 'lucide-react';
 import StatusBadge from '../components/StatusBadge';
 import { RECENT_REQUESTS_DATA } from '../utils/constants';
+import DataTable from '../components/common/DataTable';
 
 const Dashboard = () => {
     // Dummy Data for Charts
@@ -26,20 +26,59 @@ const Dashboard = () => {
 
     const COLORS = ['#4F46E5', '#10B981'];
 
-    return (
-        <div className="space-y-6 md:space-y-8">
-            {/* Header section with responsive layout */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-                <div>
-                    <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">Dashboard Overview</h1>
-                    <p className="text-gray-500 font-medium mt-1 text-sm md:text-base">Real-time insights into your service operations.</p>
+    const columns = [
+        {
+            header: 'ID',
+            key: 'id',
+            render: (val) => <span className="text-xs font-black whitespace-nowrap text-indigo-600 tracking-tight">{val}</span>
+        },
+        {
+            header: 'User',
+            key: 'user',
+            render: (val) => <span className="text-xs font-bold whitespace-nowrap text-gray-900">{val}</span>
+        },
+        {
+            header: 'Partner',
+            key: 'partner',
+            render: (val) => <span className="text-xs text-gray-500 whitespace-nowrap font-medium">{val}</span>
+        },
+        {
+            header: 'Service',
+            key: 'service',
+            render: (val) => (
+                <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-black ${val === 'Garage' ? 'bg-violet-50 border-violet-100 text-violet-700' : 'bg-sky-50 border-sky-100 text-sky-700'}`}>
+                    {val === 'Garage' ? <Wrench className="w-3 h-3" /> : <Truck className="w-3 h-3" />}
+                    {val}
                 </div>
-                <div className="bg-indigo-50 border border-indigo-100/50 px-3 py-1.5 md:px-4 md:py-2 rounded-xl text-indigo-700 text-xs md:text-sm font-bold shadow-sm self-start md:self-auto">
+            )
+        },
+        {
+            header: 'Amount',
+            key: 'amount',
+            render: (val) => <span className="text-xs font-black text-gray-900 whitespace-nowrap">₹{val}</span>
+        },
+        {
+            header: 'Status',
+            key: 'status',
+            render: (val) => <StatusBadge status={val} />
+        }
+    ];
+
+    return (
+        <div className="space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            {/* Header section */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                <div className="space-y-1">
+                    <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">Dashboard Overview</h1>
+                    <p className="text-gray-500 font-medium text-sm">Real-time insights into your service operations.</p>
+                </div>
+                <div className="bg-white border border-gray-100 px-4 py-2.5 rounded-2xl text-gray-900 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] shadow-sm flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 bg-indigo-600 rounded-full animate-pulse shadow-[0_0_8px_rgba(79,70,229,0.5)]"></div>
                     {new Date().toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </div>
             </div>
 
-            {/* Optimized Stats Grid for all screen sizes */}
+            {/* Metrics Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-4 md:gap-6">
                 <MetricCard title="Total Users" value="1,240" change="+12%" trend="up" icon={Users} color="blue" />
                 <MetricCard title="Total Partners" value="320" change="+5%" trend="up" icon={Truck} color="green" />
@@ -49,127 +88,91 @@ const Dashboard = () => {
                 <MetricCard title="SOS Alerts" value="3" change="-2%" trend="down" icon={AlertTriangle} color="red" />
             </div>
 
-            {/* Responsive Charts & Tables Section */}
-            <div className="grid grid-cols-1 2xl:grid-cols-3 gap-4 md:gap-6">
-                {/* Recent Requests Table with better mobile handling */}
-                <div className="2xl:col-span-2 premium-card overflow-hidden flex flex-col min-h-[400px]">
-                    <div className="px-4 md:px-6 py-4 md:py-5 border-b border-gray-100/50 flex justify-between items-center bg-gray-50/30">
-                        <h2 className="text-base md:text-lg font-bold text-gray-800">Recent Requests</h2>
-                        <Link
-                            to="/live-requests"
-                            className="text-indigo-600 text-[10px] md:text-xs font-bold uppercase tracking-wider hover:text-indigo-700 transition-colors flex items-center gap-1 group"
-                        >
-                            View All <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-                        </Link>
-                    </div>
-
-                    <div className="relative overflow-x-auto flex-1 scrollbar-hide">
-                        {/* Mobile Swipe Hint */}
-                        {/* <div className="block md:hidden absolute right-4 top-2 z-10 animate-pulse">
-                            <ArrowRight className="w-4 h-4 text-gray-300" />
-                        </div> */}
-
-                        <table className="min-w-full">
-                            <thead>
-                                <tr className="bg-gray-50/50 border-b border-gray-100/50">
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">ID</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">User</th>
-                                    <th className="hidden md:table-cell px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Partner</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Service</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Amount</th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100/50">
-                                {RECENT_REQUESTS_DATA.map((request) => (
-                                    <tr key={request.id} className="hover:bg-indigo-50/30 transition-colors group">
-                                        <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm font-bold text-indigo-600 tracking-tight">{request.id}</td>
-                                        <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm font-semibold text-gray-900">{request.user}</td>
-                                        <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-500 font-medium group-hover:text-gray-700 transition-colors">{request.partner}</td>
-                                        <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap text-sm">
-                                            <span className={clsx(
-                                                "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-black",
-                                                request.service === 'Garage' ? 'bg-violet-50 border-violet-100 text-violet-700' : 'bg-sky-50 border-sky-100 text-sky-700'
-                                            )}>
-                                                {request.service === 'Garage' ? <Wrench className="w-3 h-3" /> : <Truck className="w-3 h-3" />}
-                                                {request.service}
-                                            </span>
-                                        </td>
-                                        <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900 font-bold tracking-tight">₹{request.amount}</td>
-                                        <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap">
-                                            <StatusBadge status={request.status} />
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div className="px-4 md:px-6 py-4 border-t border-gray-100/50 bg-gray-50/10 text-center">
-                        <Link
-                            to="/live-requests"
-                            className="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-gray-500 hover:text-indigo-600 transition-colors"
-                        >
-                            View All Active Requests <ArrowRight className="w-4 h-4" />
-                        </Link>
-                    </div>
+            {/* Main Content Area */}
+            <div className="grid grid-cols-1 2xl:grid-cols-3 gap-6">
+                {/* Recent Requests Section */}
+                <div className="2xl:col-span-2">
+                    <DataTable
+                        title="Live Operations"
+                        subtitle="Real-time service request feed"
+                        headerRight={
+                            <Link
+                                to="/live-requests"
+                                className="text-indigo-600 text-xs font-bold tracking-widest hover:text-indigo-700 transition-colors flex items-center gap-2 group"
+                            >
+                                View All <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                        }
+                        columns={columns}
+                        data={RECENT_REQUESTS_DATA}
+                    />
                 </div>
 
-                {/* Grid for charts on tablet/mobile */}
-                <div className="flex flex-col md:grid md:grid-cols-2 2xl:flex 2xl:flex-col gap-4 md:gap-6">
-                    {/* Revenue Chart */}
-                    <div className="premium-card p-4 md:p-6">
-                        <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-base md:text-lg font-bold text-gray-800">Monthly Revenue</h2>
-                            <div className="flex items-center gap-1 text-emerald-600 font-bold text-[10px] md:text-xs bg-emerald-50 px-2 py-1 rounded-md">
-                                <Activity className="w-3 h-3" /> Trending Up
+                {/* Performance Analytics Column */}
+                <div className="space-y-6 flex flex-col">
+                    {/* Revenue Trend */}
+                    <div className="premium-card p-5 md:p-6 border border-gray-100 flex-1">
+                        <div className="flex justify-between items-center mb-8">
+                            <div>
+                                <h3 className="text-base md:text-md font-black text-gray-900">Monthly Revenue</h3>
+                                <p className="text-[11px] text-gray-400 font-medium mt-0.5">Growth progression</p>
+                            </div>
+                            <div className="flex items-center gap-1.5 text-emerald-600 font-black text-[10px] bg-emerald-50 px-2 py-1 rounded-lg border border-emerald-100">
+                                <Activity className="w-3 h-3" /> UP
                             </div>
                         </div>
-                        <div className="h-48 md:h-64">
+                        <div className="h-56">
                             <ResponsiveContainer width="100%" height="100%">
                                 <BarChart data={revenueData}>
                                     <defs>
                                         <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="0%" stopColor="#6366f1" />
-                                            <stop offset="100%" stopColor="#4f46e5" />
+                                            <stop offset="0%" stopColor="#4F46E5" />
+                                            <stop offset="100%" stopColor="#4338CA" />
                                         </linearGradient>
                                     </defs>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
                                     <XAxis
                                         dataKey="name"
                                         axisLine={false}
                                         tickLine={false}
-                                        tick={{ fontSize: 9, fill: '#9ca3af', fontWeight: 600 }}
+                                        tick={{ fontSize: 9, fill: '#94A3B8', fontWeight: 900 }}
                                         dy={10}
                                     />
                                     <YAxis
                                         axisLine={false}
                                         tickLine={false}
-                                        tick={{ fontSize: 9, fill: '#9ca3af', fontWeight: 600 }}
+                                        tick={{ fontSize: 9, fill: '#94A3B8', fontWeight: 900 }}
                                     />
                                     <Tooltip
-                                        cursor={{ fill: '#f9fafb' }}
-                                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', fontSize: '10px' }}
+                                        cursor={{ fill: 'rgba(79, 70, 229, 0.05)' }}
+                                        contentStyle={{
+                                            borderRadius: '16px',
+                                            border: 'none',
+                                            boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)',
+                                            fontSize: '10px',
+                                            fontWeight: 900,
+                                            textTransform: 'uppercase'
+                                        }}
                                     />
-                                    <Bar dataKey="uv" fill="url(#barGradient)" radius={[6, 6, 0, 0]} barSize={20} />
+                                    <Bar dataKey="uv" fill="url(#barGradient)" radius={[8, 8, 0, 0]} barSize={24} />
                                 </BarChart>
                             </ResponsiveContainer>
                         </div>
                     </div>
 
-                    {/* Service Distribution */}
-                    <div className="premium-card p-4 md:p-6">
-                        <h2 className="text-base md:text-lg font-bold text-gray-800 mb-6">Service Mix</h2>
-                        <div className="h-48 md:h-64 flex items-center justify-center relative">
+                    {/* Service Mix */}
+                    <div className="premium-card p-5 md:p-6 border border-gray-100">
+                        <h3 className="text-base md:text-md font-black text-gray-900">Service Utilization</h3>
+                        <div className="h-48 flex items-center justify-center relative">
                             <ResponsiveContainer width="100%" height="100%">
                                 <PieChart>
                                     <Pie
                                         data={serviceData}
                                         cx="50%"
                                         cy="50%"
-                                        innerRadius={55}
-                                        outerRadius={75}
-                                        paddingAngle={8}
+                                        innerRadius={60}
+                                        outerRadius={80}
+                                        paddingAngle={10}
                                         dataKey="value"
                                         stroke="none"
                                     >
@@ -178,23 +181,30 @@ const Dashboard = () => {
                                         ))}
                                     </Pie>
                                     <Tooltip
-                                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', fontSize: '10px' }}
+                                        contentStyle={{
+                                            borderRadius: '16px',
+                                            border: 'none',
+                                            boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)',
+                                            fontSize: '10px',
+                                            fontWeight: 900,
+                                            textTransform: 'uppercase'
+                                        }}
                                     />
                                 </PieChart>
                             </ResponsiveContainer>
                             <div className="absolute flex flex-col items-center">
-                                <span className="text-xl md:text-2xl font-black text-gray-900 leading-none">700</span>
-                                <span className="text-[8px] md:text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1 text-center">Total Orders</span>
+                                <span className="text-2xl font-black text-gray-900 leading-none tracking-tighter">700</span>
+                                <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest mt-1">Total Jobs</span>
                             </div>
                         </div>
-                        <div className="flex justify-center gap-4 md:gap-8 mt-6">
+                        <div className="flex justify-center gap-10 mt-8">
                             {serviceData.map((entry, index) => (
                                 <div key={entry.name} className="flex flex-col items-center gap-1">
                                     <div className="flex items-center gap-2">
-                                        <div className="w-2.5 h-2.5 rounded-full ring-4 ring-gray-50" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
-                                        <span className="text-[10px] md:text-xs font-bold text-gray-600">{entry.name}</span>
+                                        <div className="w-2.5 h-2.5 rounded-full shadow-sm" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
+                                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{entry.name}</span>
                                     </div>
-                                    <span className="text-xs md:text-sm font-black text-gray-900">{Math.round((entry.value / 700) * 100)}%</span>
+                                    <span className="text-sm font-black text-gray-900">{Math.round((entry.value / 700) * 100)}%</span>
                                 </div>
                             ))}
                         </div>

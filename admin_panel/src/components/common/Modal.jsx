@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 
 const Modal = ({ isOpen, onClose, title, children }) => {
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-black bg-opacity-50 backdrop-blur-sm p-4">
-            <div className="relative w-full max-w-2xl max-h-full rounded-xl bg-white shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden bg-black/10 backdrop-blur-sm p-4 transition-all duration-300">
+            <div className="relative w-full flex flex-col max-w-2xl max-h-full rounded-xl bg-white shadow-2xl animate-in fade-in zoom-in-95 duration-200 max-h-[85vh]">
                 <div className="flex items-center justify-between border-b border-gray-100 p-4 md:p-5">
-                    <h3 className="text-xl font-semibold text-gray-900">
+                    <h3 className="text-md md:text-lg font-semibold text-gray-900">
                         {title}
                     </h3>
                     <button
@@ -20,7 +32,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
                         <span className="sr-only">Close modal</span>
                     </button>
                 </div>
-                <div className="p-4 md:p-5 space-y-4">
+                <div className="p-4 md:p-5 space-y-4 overflow-y-auto flex-1">
                     {children}
                 </div>
             </div>

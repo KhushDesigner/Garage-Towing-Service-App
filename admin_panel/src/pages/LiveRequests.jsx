@@ -21,6 +21,8 @@ import {
     MousePointer2
 } from 'lucide-react';
 import StatusBadge from '../components/StatusBadge';
+import Button from '../components/common/Button';
+import SearchBox from '../components/common/SearchBox';
 
 const LiveRequests = () => {
     const [selectedRequestId, setSelectedRequestId] = useState(1);
@@ -225,13 +227,20 @@ const LiveRequests = () => {
                     </div>
 
                     <div className="flex items-center gap-3 w-full sm:w-auto">
-                        <button className="p-3 md:p-3.5 bg-slate-800 text-white rounded-xl md:rounded-2xl border border-slate-700 flex-1 sm:flex-none flex items-center justify-center">
+                        <Button
+                            variant="dark"
+                            className="p-3 md:p-3.5 flex-1 sm:flex-none shadow-none"
+                            onClick={() => window.open(`tel:${selectedRequest.partnerPhone}`)}
+                        >
                             <Phone className="w-5 h-5" />
-                        </button>
-                        <button className="px-6 md:px-8 py-3 md:py-4 bg-indigo-600 text-white font-black text-[10px] md:text-xs uppercase tracking-widest rounded-xl md:rounded-2xl flex-3 sm:flex-none flex items-center justify-center gap-3">
+                        </Button>
+                        <Button
+                            variant="primary"
+                            className="px-6 md:px-8 py-3 md:py-4 flex-3 sm:flex-none shadow-none"
+                            rightIcon={<ChevronRight className="w-4 h-4 hidden md:block" />}
+                        >
                             Emergency Override
-                            <ChevronRight className="w-4 h-4 hidden md:block" />
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -244,7 +253,7 @@ const LiveRequests = () => {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6">
                 <div className="space-y-1">
                     <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">Live Operations</h1>
-                    <p className="text-gray-500 font-medium mt-1 text-sm md:text-base">Tracking {liveRequests.length} active service missions.</p>
+                    <p className="text-gray-500 font-medium mt-1 text-sm">Tracking {liveRequests.length} active service missions.</p>
                 </div>
                 <div className="flex items-center gap-2 px-3 md:px-4 py-2 bg-emerald-50 text-emerald-700 rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-wider border border-emerald-100/50 shadow-sm shadow-emerald-100">
                     <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
@@ -288,16 +297,11 @@ const LiveRequests = () => {
                 >
                     {/* Search & Filters */}
                     <div className="space-y-3">
-                        <div className="relative group">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-indigo-600 transition-colors" />
-                            <input
-                                type="text"
-                                placeholder="Search mission ID, user..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-11 pr-4 py-2.5 md:py-3.5 bg-white border border-gray-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-sm shadow-gray-100"
-                            />
-                        </div>
+                        <SearchBox
+                            placeholder="Search mission ID, user..."
+                            value={searchQuery}
+                            onSearch={setSearchQuery}
+                        />
                     </div>
 
                     <div className="flex-1 p-0.5 overflow-y-auto lg:pr-3 lg:-mr-3 space-y-4 custom-scrollbar">

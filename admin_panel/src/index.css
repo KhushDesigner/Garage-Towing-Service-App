@@ -76,8 +76,8 @@
 /* Custom Scrollbar */
 ::-webkit-scrollbar,
 .custom-scrollbar::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track,
@@ -87,7 +87,7 @@
 
 ::-webkit-scrollbar-thumb,
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-gray-200 rounded-full;
+  @apply bg-gray-300 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover,
@@ -107,4 +107,8 @@
 
 .text-gradient {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-500;
+}
+
+button {
+  @apply !cursor-pointer;
 }

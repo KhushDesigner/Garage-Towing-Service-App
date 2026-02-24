@@ -43,6 +43,8 @@ export const STATUS_COLORS = {
   Blocked: 'badge-alert',
   SOS: 'badge-alert',
   Pending: 'badge-warning',
+  Open: 'badge-primary',
+  Resolved: 'badge-success',
 };
 
 // Dummy Data

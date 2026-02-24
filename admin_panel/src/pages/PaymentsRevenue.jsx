@@ -1,24 +1,13 @@
 import React, { useState } from 'react';
 import {
     CheckCircle,
-    History,
     IndianRupee,
     CreditCard,
     Wallet,
     TrendingUp,
     Clock,
     Download,
-    Filter,
-    Search,
-    ArrowUpRight,
-    ArrowDownRight,
-    SearchX,
-    Calendar,
-    ChevronDown,
     Activity,
-    Lock,
-    ArrowRight,
-    FilterX,
     User,
     Store,
     Banknote
@@ -39,10 +28,13 @@ import StatusBadge from '../components/StatusBadge';
 import MetricCard from '../components/MetricCard';
 import TransactionLedgerDrawer from '../components/TransactionLedgerDrawer';
 import clsx from 'clsx';
+import Button from '../components/common/Button';
+import DataTable from '../components/common/DataTable';
+import SearchBox from '../components/common/SearchBox';
 
 const PaymentsRevenue = () => {
-    const [dateRange, setDateRange] = useState('Last 30 Days');
     const [isLedgerOpen, setIsLedgerOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     // Dummy Chart Data
     const revenueChartData = [
@@ -76,29 +68,107 @@ const PaymentsRevenue = () => {
         { title: 'Today Revenue', value: '₹18,200', change: '+5%', trend: 'up', icon: CheckCircle, color: 'green' },
     ];
 
+    const columns = [
+        {
+            header: 'Node Identify',
+            key: 'id',
+            render: (val) => (
+                <p className="text-xs whitespace-nowrap md:text-sm font-black text-gray-900 group-hover:text-indigo-600 transition-colors uppercase">{val}</p>
+            )
+        },
+        {
+            header: 'Platform Actors',
+            key: 'actors',
+            render: (_, row) => (
+                <div className="flex flex-col gap-1.5 whitespace-nowrap">
+                    <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded-md bg-indigo-50 flex items-center justify-center text-indigo-600">
+                            <User className="w-3 h-3" />
+                        </div>
+                        <span className="text-xs font-bold text-gray-700">{row.user}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded-md bg-amber-50 flex items-center justify-center text-amber-600">
+                            <Store className="w-3 h-3" />
+                        </div>
+                        <span className="text-xs font-bold text-gray-500 truncate max-w-[150px]">{row.partner}</span>
+                    </div>
+                </div>
+            )
+        },
+        {
+            header: 'Accounting Flow',
+            key: 'total',
+            align: 'right',
+            render: (val, row) => (
+                <div className="flex flex-col items-end whitespace-nowrap">
+                    <span className="text-base font-black text-gray-900">₹{val.toLocaleString()}</span>
+                    <div className="flex gap-2 text-[11px] font-bold text-gray-400 mt-1 uppercase tracking-tighter">
+                        <span className="text-indigo-500/80">Fee: ₹{row.comm}</span>
+                        <span className="text-emerald-500/80">Ptr: ₹{row.share}</span>
+                    </div>
+                </div>
+            )
+        },
+        {
+            header: 'Payment Node',
+            key: 'mode',
+            align: 'center',
+            render: (val) => (
+                <div className={clsx(
+                    "inline-flex whitespace-nowrap items-center gap-1.5 px-3 py-1 rounded-xl text-[10px] font-black border uppercase tracking-wider",
+                    val === 'Online' ? 'bg-indigo-50 text-indigo-700 border-indigo-100' :
+                        val === 'Cash' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
+                            'bg-amber-50 text-amber-700 border-amber-100'
+                )}>
+                    {val === 'Online' ? <CreditCard className="w-3 h-3" /> :
+                        val === 'Cash' ? <Banknote className="w-3 h-3" /> :
+                            <Wallet className="w-3 h-3" />}
+                    {val}
+                </div>
+            )
+        },
+        {
+            header: 'Status',
+            key: 'status',
+            align: 'center',
+            render: (val) => <StatusBadge status={val} />
+        },
+        {
+            header: 'Timestamp',
+            key: 'date',
+            render: (val) => (
+                <div className="flex items-center gap-2 whitespace-nowrap">
+                    <div className="p-1.5 bg-gray-50 rounded-lg text-gray-400">
+                        <Clock className="w-3.5 h-3.5" />
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="text-xs font-bold text-gray-700">{val.split(',')[0]}</span>
+                        <span className="text-xs font-medium text-gray-400">{val.split(',')[1].trim()}</span>
+                    </div>
+                </div>
+            )
+        }
+    ];
+
     return (
-        <div className="space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-10">
-            {/* Page Header - Matched with CompletedRequests */}
+        <div className="space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {/* Page Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6">
                 <div className="space-y-1">
-                    <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight flex items-center gap-3">
+                    <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">
                         Payments & Financials
                     </h1>
-                    <p className="text-gray-500 font-medium mt-1 text-sm md:text-base">Real-time revenue tracking and settlement management.</p>
+                    <p className="text-gray-500 font-medium text-sm">Real-time revenue tracking and settlement management.</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="flex-1 text-sm md:text-base md:flex-none inline-flex items-center cursor-pointer justify-center gap-2 px-5 py-2.5 md:py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl md:rounded-2xl hover:border-indigo-600 hover:text-indigo-600 transition-all shadow-sm active:scale-95 group">
-                        <Download className="w-4 h-4 text-gray-400 group-hover:text-indigo-600 transition-colors" />
+                    <Button variant="outline" leftIcon={<Download className="w-4 h-4 text-gray-400" />}>
                         Export Report
-                    </button>
-                    {/* <button className="flex-1 text-sm md:text-base md:flex-none inline-flex items-center cursor-pointer justify-center gap-2 px-5 py-2.5 md:py-3 bg-indigo-600 text-white font-bold rounded-xl md:rounded-2xl hover:bg-indigo-700 transition-all shadow-indigo-200 shadow-lg active:scale-95">
-                        <History className="w-4 h-4" />
-                        Payout History
-                    </button> */}
+                    </Button>
                 </div>
             </div>
 
-            {/* Summary Metrics - Matched Grid & Spacing */}
+            {/* Summary Metrics */}
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
                 {stats.map((stat, index) => (
                     <MetricCard
@@ -113,14 +183,14 @@ const PaymentsRevenue = () => {
                 ))}
             </div>
 
-            {/* Visual Analytics - Using premium-card treatment */}
+            {/* Visual Analytics */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Revenue Growth Matrix */}
-                <div className="lg:col-span-2 premium-card p-6 md:p-8 relative overflow-hidden group">
+                <div className="lg:col-span-2 premium-card p-5 md:p-6 relative overflow-hidden group">
                     <div className="flex items-center justify-between mb-8">
+
                         <div className="space-y-1">
-                            <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none">Monthly Progress</h3>
-                            <p className="text-lg font-extrabold text-gray-900">Revenue Flow & Projections</p>
+                            <h3 className="text-base md:text-md font-black text-gray-900">Monthly Progress</h3>
+                            <p className="text-[11px] text-gray-400 font-medium mt-0.5">Revenue Flow & Projections</p>
                         </div>
                         <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 border border-gray-100 rounded-xl">
                             <Activity className="w-3.5 h-3.5 text-indigo-600" />
@@ -172,8 +242,7 @@ const PaymentsRevenue = () => {
                     </div>
                 </div>
 
-                {/* Distribution Matrix */}
-                <div className="premium-card p-6 md:p-8 flex flex-col items-center">
+                <div className="premium-card p-5 md:p-6 flex flex-col items-center">
                     <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-6 w-full text-center">Commission Structure Share</h3>
 
                     <div className="h-64 mt-4 w-full relative">
@@ -215,102 +284,28 @@ const PaymentsRevenue = () => {
                 </div>
             </div>
 
-            {/* Financial Ledger Section - Using premium-card & light treatment */}
-            <div className="premium-card overflow-hidden">
-                <div className="p-5 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between  gap-3 md:gap-4 bg-gray-50/30">
-                    <div className="space-y-1">
-                        <p className="text-base md:text-lg font-bold text-gray-800">Recent Transaction & Revenue Flow</p>
-                    </div>
-                    <div className="flex items-center gap-3 max-w-[400px] w-full">
-                        <div className="relative group w-full">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-indigo-600 transition-colors" />
-                            <input
-                                type="text"
-                                placeholder="Search TXN ID, nodes or actors..."
-                                className="w-full max-w-[400px] pl-11 pr-4 py-2.5 md:py-3.5 bg-white border border-gray-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-sm shadow-gray-100"
-                            />
-                        </div>
-                    </div>
-                </div>
+            {/* Financial Ledger Section */}
+            <div className="space-y-4">
+                <DataTable
+                    title="Recent Transaction & Revenue Flow"
+                    subtitle="Financial ledger overview"
+                    filters={
+                        <SearchBox
+                            value={searchQuery}
+                            onSearch={setSearchQuery}
+                            placeholder="Search TXN ID, nodes or actors..."
+                            width="w-full lg:w-80"
+                        />
+                    }
+                    columns={columns}
+                    data={transactions.filter(txn =>
+                        txn.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        txn.user.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        txn.partner.toLowerCase().includes(searchQuery.toLowerCase())
+                    )}
+                />
 
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left">
-                        <thead>
-                            <tr className="bg-gray-50/80 border-b border-gray-100">
-                                <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Node Identify</th>
-                                <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Platform Actors</th>
-                                <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap text-right">Accounting Flow</th>
-                                <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap text-center">Payment Node</th>
-                                <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap text-center">Status</th>
-                                <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap text-left">Timestamp</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-50">
-                            {transactions.map((txn) => (
-                                <tr key={txn.id} className="hover:bg-indigo-50/20 transition-all group">
-                                    <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap">
-                                        <p className="text-xs md:text-sm font-black text-gray-900 group-hover:text-indigo-600 transition-colors">{txn.id}</p>
-                                    </td>
-                                    <td className="px-4 md:px-6 py-3 md:py-4 whitespace-nowrap">
-                                        <div className="flex flex-col gap-1.5">
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-5 h-5 rounded-md bg-indigo-50 flex items-center justify-center text-indigo-600">
-                                                    <User className="w-3 h-3" />
-                                                </div>
-                                                <span className="text-xs font-bold text-gray-700">{txn.user}</span>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-5 h-5 rounded-md bg-amber-50 flex items-center justify-center text-amber-600">
-                                                    <Store className="w-3 h-3" />
-                                                </div>
-                                                <span className="text-xs font-bold text-gray-500 truncate max-w-[150px]">{txn.partner}</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="px-4 md:px-6 py-3 md:py-4 text-right whitespace-nowrap">
-                                        <div className="flex flex-col items-end">
-                                            <span className="text-base font-black text-gray-900">₹{txn.total.toLocaleString()}</span>
-                                            <div className="flex gap-2 text-[11px] font-bold text-gray-400 mt-1 uppercase tracking-tighter">
-                                                <span className="text-indigo-500/80">Fee: ₹{txn.comm}</span>
-                                                <span className="text-emerald-500/80">Ptr: ₹{txn.share}</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="px-4 md:px-6 py-3 md:py-4 text-center whitespace-nowrap">
-                                        <div className={clsx(
-                                            "inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-[10px] font-black border uppercase tracking-wider",
-                                            txn.mode === 'Online' ? 'bg-indigo-50 text-indigo-700 border-indigo-100' :
-                                                txn.mode === 'Cash' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
-                                                    'bg-amber-50 text-amber-700 border-amber-100'
-                                        )}>
-                                            {txn.mode === 'Online' ? <CreditCard className="w-3 h-3" /> :
-                                                txn.mode === 'Cash' ? <Banknote className="w-3 h-3" /> :
-                                                    <Wallet className="w-3 h-3" />}
-                                            {txn.mode}
-                                        </div>
-                                    </td>
-                                    <td className="px-4 md:px-6 py-3 md:py-4 text-center whitespace-nowrap">
-                                        <StatusBadge status={txn.status} />
-                                    </td>
-                                    <td className="px-4 md:px-6 py-3 md:py-4 text-left whitespace-nowrap">
-                                        <div className="flex items-center gap-2">
-                                            <div className="p-1.5 bg-gray-50 rounded-lg text-gray-400">
-                                                <Clock className="w-3.5 h-3.5" />
-                                            </div>
-                                            <div className="flex flex-col">
-                                                <span className="text-xs font-bold text-gray-700">{txn.date.split(',')[0]}</span>
-                                                <span className="text-xs font-medium text-gray-400">{txn.date.split(',')[1].trim()}</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-
-                {/* Ledger Footer */}
-                <div className="px-8 py-5 bg-gray-50/50 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-gray-100">
+                <div className="px-8 py-5 premium-card border-2 border-solid border-white bg-gray-50/50 flex flex-col md:flex-row items-center justify-between gap-4">
                     <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest text-center md:text-left">Archive Log Index: Showing Top 5 of {1280} Flow Nodes</p>
                     <button
                         onClick={() => setIsLedgerOpen(true)}
@@ -321,7 +316,6 @@ const PaymentsRevenue = () => {
                 </div>
             </div>
 
-            {/* Platform Transaction Archive Drawer */}
             <TransactionLedgerDrawer
                 isOpen={isLedgerOpen}
                 onClose={() => setIsLedgerOpen(false)}

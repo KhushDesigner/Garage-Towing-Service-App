@@ -16,15 +16,8 @@ import {
 } from 'lucide-react';
 import StatusBadge from './StatusBadge';
 import clsx from 'clsx';
-import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    IconButton,
-    Fade,
-    Zoom
-} from '@mui/material';
-import { X as MuiX } from '@mui/icons-material';
+import Modal from './common/Modal';
+import Button from './common/Button';
 
 const PartnerDetailsDrawer = ({ partner, isOpen, onClose }) => {
     const [activeTab, setActiveTab] = useState('jobs');
@@ -289,91 +282,50 @@ const PartnerDetailsDrawer = ({ partner, isOpen, onClose }) => {
 
                 {/* Footer Controls */}
                 <div className="p-4 sm:p-6 border-t border-gray-100 bg-white flex gap-2.5 sm:gap-3 shrink-0 safe-bottom">
-                    <button
-                        onClick={onClose}
-                        className="flex-1 py-3 sm:py-3.5 px-4 bg-gray-100 text-gray-700 font-black text-[10px] sm:text-xs uppercase tracking-widest rounded-xl sm:rounded-2xl hover:bg-gray-200 transition-all active:scale-95"
-                    >
+                    <Button variant="outline" onClick={onClose} className="flex-1">
                         Close
-                    </button>
-                    <button className="flex-1 py-3 sm:py-3.5 px-4 bg-rose-600 text-white font-black text-[10px] sm:text-xs uppercase tracking-widest rounded-xl sm:rounded-2xl hover:bg-rose-700 transition-all shadow-lg shadow-rose-100 active:scale-95 flex items-center justify-center gap-2">
-                        <Ban className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    </Button>
+                    <Button variant="danger" leftIcon={<Ban className="w-4 h-4" />} className="flex-1">
                         Suspend Partner
-                    </button>
+                    </Button>
                 </div>
             </div>
 
-            {/* Document Viewer Modal using Material UI */}
-            <Dialog
-                open={Boolean(viewingDoc)}
+            {/* Document Viewer Modal using Custom Modal */}
+            <Modal
+                isOpen={Boolean(viewingDoc)}
                 onClose={() => setViewingDoc(null)}
-                maxWidth="lg"
-                fullWidth
-                TransitionComponent={Fade}
-                PaperProps={{
-                    sx: {
-                        borderRadius: '24px',
-                        overflow: 'hidden',
-                        boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)',
-                        width: "calc(100% - 32px)",
-                        margin: "16px"
-                    }
-                }}
+                title={viewingDoc?.name}
             >
-                <DialogTitle sx={{
-                    m: 0,
-                    p: 3,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'between',
-                    borderBottom: '1px solid #f3f4f6'
-                }}>
-                    <div style={{ flex: 1 }}>
-                        <h3 className="!text-base sm:!text-lg font-bold text-gray-900 tracking-tight leading-none">
-                            {viewingDoc?.name}
-                        </h3>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1.5">
-                            {viewingDoc?.type}
-                        </p>
-                    </div>
-                    <IconButton
-                        onClick={() => setViewingDoc(null)}
-                        sx={{
-                            color: (theme) => theme.palette.grey[500],
-                            '&:hover': { bgcolor: '#f3f4f6', color: '#111827' },
-                            borderRadius: '12px'
-                        }}
-                    >
-                        <X className="w-4 h-4 sm:w-5 sm:h-5" />
-                    </IconButton>
-                </DialogTitle>
-
-                <DialogContent sx={{ p: 0, bgcolor: '#f9fafb', minHeight: '40vh', display: 'flex', alignItems: 'center', justifyCenter: 'center' }}>
-                    {viewingDoc && (
-                        <div className="p-4 sm:p-10 flex items-center justify-center w-full">
-                            <Zoom in={true} style={{ transitionDelay: '100ms' }}>
-                                <div className="relative group max-w-full">
-                                    <img
-                                        src={viewingDoc.url}
-                                        alt={viewingDoc.name}
-                                        className="max-w-full h-auto rounded-2xl shadow-lg border border-gray-100"
-                                        style={{ maxHeight: '75vh', objectFit: 'contain' }}
-                                    />
-                                    <div className="absolute inset-0 ring-1 ring-inset ring-black/5 rounded-2xl pointer-events-none"></div>
-                                </div>
-                            </Zoom>
+                {viewingDoc && (
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-1">
+                            <p className="text-[10px] font-extrabold text-indigo-500 uppercase tracking-[0.2em] leading-none">
+                                {viewingDoc.type}
+                            </p>
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                                Verified on {viewingDoc.date}
+                            </p>
                         </div>
-                    )}
-                </DialogContent>
 
-                <div className="px-6 py-4 border-t border-gray-100 flex justify-end bg-white">
-                    <button
-                        onClick={() => setViewingDoc(null)}
-                        className="px-8 py-3 bg-gray-900 text-white text-xs font-black uppercase tracking-widest rounded-xl hover:bg-black transition-all active:scale-95 shadow-lg shadow-gray-200"
-                    >
-                        Close Preview
-                    </button>
-                </div>
-            </Dialog>
+                        <div className="relative group max-w-full bg-gray-50 rounded-2xl p-2 sm:p-4 border border-gray-100 min-h-[300px] flex items-center justify-center">
+                            <img
+                                src={viewingDoc.url}
+                                alt={viewingDoc.name}
+                                className="max-w-full h-auto rounded-xl shadow-md"
+                                style={{ maxHeight: '60vh', objectFit: 'contain' }}
+                            />
+                            <div className="absolute inset-0 ring-1 ring-inset ring-black/5 rounded-2xl pointer-events-none"></div>
+                        </div>
+
+                        <div className="pt-2 flex justify-end">
+                            <Button variant="outline" onClick={() => setViewingDoc(null)} className="w-full sm:w-auto">
+                                Close Preview
+                            </Button>
+                        </div>
+                    </div>
+                )}
+            </Modal>
         </>
     );
 };
