@@ -15,15 +15,22 @@ import {
     Lock,
     MoreHorizontal
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 
 const Header = ({ sidebarOpen, toggleSidebar }) => {
     const [profileOpen, setProfileOpen] = useState(false);
     const [notifOpen, setNotifOpen] = useState(false);
+    const navigate = useNavigate();
 
     const notificationRef = useRef(null);
     const profileRef = useRef(null);
+
+    const handleLogout = () => {
+        setProfileOpen(false);
+        localStorage.removeItem('isAdminAuthenticated');
+        navigate('/login', { replace: true });
+    };
 
     // Close dropdowns when clicking outside
     useEffect(() => {
@@ -275,7 +282,10 @@ const Header = ({ sidebarOpen, toggleSidebar }) => {
                                 Security Settings
                             </Link>
                             <div className="border-t border-gray-50 my-2 mx-4"></div>
-                            <button className="flex w-[calc(100%-16px)] items-center gap-3 px-5 py-3 text-sm font-bold text-red-500 hover:bg-red-50 transition-all mx-2 rounded-xl">
+                            <button
+                                onClick={handleLogout}
+                                className="flex w-[calc(100%-16px)] items-center gap-3 px-5 py-3 text-sm font-bold text-red-500 hover:bg-red-50 transition-all mx-2 rounded-xl"
+                            >
                                 <Clock className="w-5 h-5 opacity-70" />
                                 Log Out
                             </button>

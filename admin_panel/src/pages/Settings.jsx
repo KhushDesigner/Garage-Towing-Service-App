@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import Button from '../components/common/Button';
 import DataTable from '../components/common/DataTable';
+import Modal from '../components/common/Modal';
 import clsx from 'clsx';
 
 const Settings = () => {
@@ -34,6 +35,9 @@ const Settings = () => {
 
     const [cities, setCities] = useState(['Mumbai', 'Delhi', 'Bangalore', 'Pune', 'Chennai']);
     const [newCity, setNewCity] = useState('');
+
+    const [isSecurityModalOpen, setIsSecurityModalOpen] = useState(false);
+    const [isNewAccessModalOpen, setIsNewAccessModalOpen] = useState(false);
 
     const roles = [
         { id: 1, name: 'Vikram Singh', role: 'Super Admin', email: 'vikram@garagetow.com' },
@@ -61,15 +65,22 @@ const Settings = () => {
             header: 'Administrator',
             key: 'name',
             render: (val, row) => (
-                <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-indigo-50 border border-indigo-100 rounded-xl shadow-sm flex items-center justify-center text-indigo-600 font-extrabold text-sm uppercase">
-                        {val[0]}
+                <div className="flex items-center gap-2.5 md:gap-3 whitespace-nowrap">
+                    <div className="relative">
+                        <div className="w-10 h-10 md:w-11 md:h-11 bg-white border border-gray-200 rounded-xl md:rounded-2xl flex items-center justify-center text-indigo-600 font-bold text-sm md:text-base shadow-sm group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                            {val[0]}
+                        </div>
+                        <div className={clsx(
+                            "absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white shadow-sm",
+                            row.status === 'Active' ? 'bg-emerald-500' : 'bg-rose-500'
+                        )}></div>
                     </div>
                     <div>
-                        <p className="text-sm font-black text-gray-900 uppercase tracking-tight">{val}</p>
-                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest leading-none mt-1">{row.email}</p>
+                        <div className="font-black text-gray-900 text-xs md:text-sm tracking-tight">{val}</div>
+                        <div className="text-[10px] md:text-[11px] font-medium text-gray-400 uppercase tracking-widest mt-0.5">{row.email}</div>
                     </div>
                 </div>
+
             )
         },
         {
@@ -77,9 +88,10 @@ const Settings = () => {
             key: 'role',
             align: 'center',
             render: (val) => (
-                <span className="px-3 py-1 bg-white border border-gray-100 rounded-lg text-[10px] font-black uppercase text-gray-600 tracking-widest shadow-sm">
+                <span className="whitespace-nowrap inline-flex items-center px-2.5 py-1 bg-gray-100 text-gray-900 rounded-lg text-xs font-black tracking-tight group-hover:bg-indigo-100 group-hover:text-indigo-700 transition-colors">
                     {val}
                 </span>
+
             )
         },
         {
@@ -87,9 +99,10 @@ const Settings = () => {
             key: 'id',
             align: 'right',
             render: (val) => (
-                <button className="p-2 text-gray-300 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all">
+                <button className="p-2.5 bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-rose-600 hover:border-rose-600 transition-all shadow-sm">
                     <Trash2 className="w-4 h-4" />
                 </button>
+
             )
         }
     ];
@@ -129,41 +142,41 @@ const Settings = () => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
                             <div className="space-y-3">
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1 leading-none">Application Identity</label>
+                                <label className="text-xs block font-black text-gray-500 mb-1.5">Application Identity</label>
                                 <input
                                     type="text"
                                     value={appSettings.appName}
                                     onChange={(e) => setAppSettings({ ...appSettings, appName: e.target.value })}
-                                    className="w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-600 focus:bg-white rounded-2xl px-5 py-4 text-sm font-black text-gray-900 outline-none transition-all shadow-inner uppercase"
+                                    className="w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-500 focus:bg-white rounded-xl px-4 py-3 text-sm font-normal text-gray-900 outline-none transition-all"
                                 />
                             </div>
                             <div className="space-y-3">
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1 leading-none">Global Support Channel</label>
+                                <label className="text-xs block font-black text-gray-500 mb-1.5">Global Support Channel</label>
                                 <input
                                     type="email"
                                     value={appSettings.supportEmail}
                                     onChange={(e) => setAppSettings({ ...appSettings, supportEmail: e.target.value })}
-                                    className="w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-600 focus:bg-white rounded-2xl px-5 py-4 text-sm font-black text-gray-900 outline-none transition-all shadow-inner"
+                                    className="w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-500 focus:bg-white rounded-xl px-4 py-3 text-sm font-normal text-gray-900 outline-none transition-all"
                                 />
                             </div>
                             <div className="space-y-3">
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1 leading-none">Operational Currency</label>
+                                <label className="text-xs block font-black text-gray-500 mb-1.5">Operational Currency</label>
                                 <div className="relative">
-                                    <select className="w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-600 focus:bg-white rounded-2xl px-5 py-4 text-sm font-black text-gray-900 outline-none transition-all shadow-inner appearance-none uppercase">
+                                    <select className="w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-500 focus:bg-white rounded-xl px-4 py-3 text-sm font-normal text-gray-900 outline-none transition-all">
                                         <option>INR (₹) - Indian Rupee</option>
                                         <option>USD ($) - US Dollar</option>
                                     </select>
-                                    <ChevronRight className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 rotate-90" />
+                                    <ChevronRight className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 rotate-90 pointer-events-none" />
                                 </div>
                             </div>
                             <div className="space-y-3">
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1 leading-none">System Time Protocol</label>
+                                <label className="text-xs block font-black text-gray-500 mb-1.5">System Time Protocol</label>
                                 <div className="relative">
-                                    <select className="w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-600 focus:bg-white rounded-2xl px-5 py-4 text-sm font-black text-gray-900 outline-none transition-all shadow-inner appearance-none uppercase">
+                                    <select className="w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-500 focus:bg-white rounded-xl px-4 py-3 text-sm font-normal text-gray-900 outline-none transition-all">
                                         <option>(GMT+05:30) India Standard Time</option>
                                         <option>(GMT+00:00) UTC</option>
                                     </select>
-                                    <ChevronRight className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 rotate-90" />
+                                    <ChevronRight className="absolute right-5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 rotate-90 pointer-events-none" />
                                 </div>
                             </div>
                         </div>
@@ -180,6 +193,7 @@ const Settings = () => {
                                     size="sm"
                                     className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100"
                                     leftIcon={<Plus className="w-3.5 h-3.5" />}
+                                    onClick={() => setIsNewAccessModalOpen(true)}
                                 >
                                     New Access
                                 </Button>
@@ -227,7 +241,7 @@ const Settings = () => {
                     </section>
 
                     {/* City Management */}
-                    <section className="premium-card p-5 md:p-6 border border-gray-100 space-y-8">
+                    <section className="premium-card p-5 md:p-6 border border-gray-100 space-y-6">
                         <div className="flex items-center gap-3">
                             {/* <div className="p-2.5 bg-emerald-50 border border-emerald-100 rounded-xl text-emerald-600 shadow-sm">
                                 <Building2 className="w-5 h-5" />
@@ -244,18 +258,18 @@ const Settings = () => {
                                 value={newCity}
                                 onChange={(e) => setNewCity(e.target.value)}
                                 placeholder="Add City..."
-                                className="flex-1 bg-gray-50 rounded-2xl px-5 py-3 text-xs font-black outline-none border border-transparent focus:border-emerald-600 transition-all shadow-inner uppercase tracking-widest"
+                                className="flex-1 w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-500 focus:bg-white rounded-xl px-4 py-3 text-sm font-normal text-gray-900 outline-none transition-all"
                             />
-                            <button onClick={addCity} className="p-3 bg-emerald-600 text-white rounded-2xl hover:bg-emerald-700 transition-all shadow-md shadow-emerald-100 active:scale-95">
+                            <button onClick={addCity} className="h-[46px] w-[46px] p-3 bg-emerald-600 text-white rounded-2xl hover:bg-emerald-700 transition-all shadow-md shadow-emerald-100 active:scale-95">
                                 <Plus className="w-5 h-5" />
                             </button>
                         </div>
 
                         <div className="flex flex-wrap gap-2.5">
                             {cities.map((city) => (
-                                <div key={city} className="flex items-center gap-2.5 bg-gray-50 border border-gray-100 px-4 py-2 rounded-xl group hover:border-indigo-200 transition-all">
-                                    <span className="text-[10px] font-black text-gray-600 uppercase tracking-widest">{city}</span>
-                                    <button onClick={() => removeCity(city)} className="text-gray-300 hover:text-rose-600 transition-colors">
+                                <div key={city} className="flex items-center gap-1.5 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-xl group hover:border-indigo-200 transition-all">
+                                    <span className="text-xs font-semibold text-indigo-600 capitalize">{city}</span>
+                                    <button onClick={() => removeCity(city)} className="text-indigo-300 hover:text-rose-600 transition-colors">
                                         <X className="w-3.5 h-3.5" />
                                     </button>
                                 </div>
@@ -265,7 +279,10 @@ const Settings = () => {
 
                     {/* Account Security & Logout */}
                     <div className="space-y-4">
-                        <button className="w-full flex items-center justify-between px-8 py-6 bg-white border border-gray-100 rounded-2xl hover:bg-gray-50 transition-all group shadow-sm">
+                        <button
+                            onClick={() => setIsSecurityModalOpen(true)}
+                            className="w-full flex items-center justify-between px-8 py-6 bg-white border border-gray-100 rounded-2xl hover:bg-gray-50 transition-all group shadow-sm"
+                        >
                             <div className="flex items-center gap-4">
                                 <div className="p-2.5 bg-gray-50 border border-gray-100 rounded-xl text-gray-400 group-hover:bg-gray-900 group-hover:text-white transition-all shadow-sm">
                                     <Lock className="w-5 h-5" />
@@ -285,6 +302,84 @@ const Settings = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Security Protocol Modal */}
+            <Modal isOpen={isSecurityModalOpen} onClose={() => setIsSecurityModalOpen(false)} title="Security Protocol">
+                <div className="space-y-6">
+                    <div className="flex bg-indigo-50 p-4 rounded-xl items-start gap-4">
+                        <Lock className="w-6 h-6 text-indigo-600 mt-0.5" />
+                        <div>
+                            <h4 className="text-sm font-bold text-gray-900">Password Update</h4>
+                            <p className="text-xs text-gray-500 mt-1">Ensure your account is using a long, random password to stay secure.</p>
+                        </div>
+                    </div>
+                    <div className="space-y-4">
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-gray-500 uppercase tracking-wider">Current Password</label>
+                            <input type="password" placeholder="••••••••" className="w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-500 focus:bg-white rounded-xl px-4 py-3 text-sm font-normal text-gray-900 outline-none transition-all" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-gray-500 uppercase tracking-wider">New Password</label>
+                            <input type="password" placeholder="••••••••" className="w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-500 focus:bg-white rounded-xl px-4 py-3 text-sm font-normal text-gray-900 outline-none transition-all" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-gray-500 uppercase tracking-wider">Confirm New Password</label>
+                            <input type="password" placeholder="••••••••" className="w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-500 focus:bg-white rounded-xl px-4 py-3 text-sm font-normal text-gray-900 outline-none transition-all" />
+                        </div>
+                    </div>
+                    <div className="flex justify-end pt-4 border-t border-gray-100">
+                        <Button variant="primary" className="bg-indigo-600 px-6 py-2.5 shadow-md shadow-indigo-200">
+                            Update Password
+                        </Button>
+                    </div>
+                </div>
+            </Modal>
+
+            {/* New Access Modal */}
+            <Modal isOpen={isNewAccessModalOpen} onClose={() => setIsNewAccessModalOpen(false)} title="Create New Access Node">
+                <div className="space-y-6">
+                    <p className="text-sm text-gray-500">Provide details to register a new administrator into the staffing node.</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div className="space-y-2 md:col-span-2">
+                            <label className="text-xs font-black text-gray-500 uppercase tracking-wider">Full Name</label>
+                            <input type="text" placeholder="e.g. John Doe" className="w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-500 focus:bg-white rounded-xl px-4 py-3 text-sm font-normal text-gray-900 outline-none transition-all" />
+                        </div>
+                        <div className="space-y-2 md:col-span-2">
+                            <label className="text-xs font-black text-gray-500 uppercase tracking-wider">Email Address</label>
+                            <input type="email" placeholder="john@garagetow.com" className="w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-500 focus:bg-white rounded-xl px-4 py-3 text-sm font-normal text-gray-900 outline-none transition-all" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-gray-500 uppercase tracking-wider">Access Level</label>
+                            <div className="relative">
+                                <select className="w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-500 focus:bg-white rounded-xl px-4 py-3 text-sm font-normal text-gray-900 outline-none transition-all appearance-none cursor-pointer">
+                                    <option>Super Admin</option>
+                                    <option>Operations Head</option>
+                                    <option>Support Lead</option>
+                                </select>
+                                <ChevronRight className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 rotate-90 pointer-events-none" />
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-black text-gray-500 uppercase tracking-wider">Status</label>
+                            <div className="relative">
+                                <select className="w-full bg-gray-50/50 border border-gray-200 focus:border-indigo-500 focus:bg-white rounded-xl px-4 py-3 text-sm font-normal text-gray-900 outline-none transition-all appearance-none cursor-pointer">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
+                                <ChevronRight className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 rotate-90 pointer-events-none" />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                        <Button variant="secondary" onClick={() => setIsNewAccessModalOpen(false)}>
+                            Cancel
+                        </Button>
+                        <Button variant="primary" className="bg-emerald-600 shadow-md shadow-emerald-200 px-6">
+                            Grant Access
+                        </Button>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 };
